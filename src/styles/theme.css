@@ -1,0 +1,225 @@
+/* ========================================
+   PALETA DE COLORES - REDUCAX
+   ======================================== */
+:root {
+  /* Colores principales */
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
+  --color-accent: #ff003c;
+  
+  /* Sombras neon */
+  --shadow-neon-red: 0 0 10px 2px #ff003c;
+  --shadow-neon-red-strong: 0 0 20px 4px #ff003c;
+  
+  /* Bordes */
+  --border-thick: 4px solid #000000;
+  --border-medium: 2px solid #000000;
+  --border-thin: 1px solid #000000;
+  
+  /* Fondos */
+  --bg-white: #ffffff;
+  --bg-dark: #1a1a1a;
+  --bg-gray: #f5f5f5;
+  
+  /* Textos */
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-white: #ffffff;
+  
+  /* Espaciados */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* ========================================
+   ESTILOS GLOBALES
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-white);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+.shadow-neon {
+  box-shadow: var(--shadow-neon-red);
+}
+
+.shadow-neon-strong {
+  box-shadow: var(--shadow-neon-red-strong);
+}
+
+.border-thick {
+  border: var(--border-thick);
+}
+
+.border-medium {
+  border: var(--border-medium);
+}
+
+.bg-primary {
+  background-color: var(--bg-white) !important;
+}
+
+.bg-dark-custom {
+  background-color: var(--bg-dark) !important;
+}
+
+/* ========================================
+   NAVBAR PERSONALIZADO
+   ======================================== */
+.navbar-dark {
+  background-color: var(--bg-dark) !important;
+  border-bottom: var(--border-thick);
+  box-shadow: var(--shadow-neon-red);
+}
+
+.navbar-brand h5 {
+  color: var(--text-white);
+  font-weight: bold;
+  text-shadow: var(--shadow-neon-red);
+}
+
+.nav-link {
+  color: var(--text-white) !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-accent) !important;
+  text-shadow: 0 0 8px var(--color-accent);
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.btn-custom {
+  background: var(--bg-white);
+  color: var(--text-primary);
+  border: 3px solid var(--color-secondary);
+  box-shadow: var(--shadow-neon-red);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neon-red-strong);
+}
+
+/* ========================================
+   INPUTS
+   ======================================== */
+.form-control-custom {
+  border: var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-neon-red);
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+.card-custom {
+  background: var(--bg-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-neon-red);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  transition: all 0.3s ease;
+}
+
+.card-custom:hover {
+  box-shadow: var(--shadow-neon-red-strong);
+  transform: translateY(-4px);
+}
+
+/* ========================================
+   SIDEBAR
+   ======================================== */
+.sidebar-custom {
+  background-color: var(--bg-dark) !important;
+  border-right: var(--border-thick);
+  box-shadow: var(--shadow-neon-red);
+}
+
+.sidebar-custom a {
+  color: var(--text-white);
+  transition: all 0.3s ease;
+}
+
+.sidebar-custom a:hover {
+  color: var(--color-accent);
+  text-shadow: 0 0 8px var(--color-accent);
+  padding-left: 1.5rem;
+}
+
+/* ========================================
+   DROPDOWN
+   ======================================== */
+.dropdown-menu {
+  border: var(--border-medium);
+  box-shadow: var(--shadow-neon-red);
+  border-radius: var(--radius-sm);
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-gray);
+  color: var(--color-accent);
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: var(--shadow-neon-red);
+  }
+  50% {
+    box-shadow: var(--shadow-neon-red-strong);
+  }
+}
+
+.neon-pulse {
+  animation: neonPulse 2s infinite;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .navbar-brand h5 {
+    font-size: 1rem;
+  }
+  
+  .card-custom {
+    padding: var(--spacing-sm);
+  }
+}
