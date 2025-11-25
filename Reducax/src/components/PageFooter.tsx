@@ -1,15 +1,2 @@
-const PageFooter = () => {
-    return (
-      <footer className="page-footer font-small bg-primary fixed-bottom">
-        <div className="footer-copyright text-center p-3 text-white">
-          © 2025 Copyright:{" "}
-          <a className="text-white" href="https://">
-            Mipagina.com
-          </a>
-        </div>
-      </footer>
-    );
-  };
-  
-  export default PageFooter;
-  
+const Footer = () => <footer style={{padding: "1rem", borderTop: "2px solid #000"}}>FOOTER: pie de página</footer>;
+export default Footer;
