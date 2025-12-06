@@ -1,29 +1,34 @@
 /* ========================================
    PALETA DE COLORES - REDUCAX
+   Red Social Educativa - Estilo Blanco y Negro
    ======================================== */
 :root {
-  /* Colores principales */
+  /* Colores principales - Solo Blanco y Negro */
   --color-primary: #ffffff;
   --color-secondary: #000000;
-  --color-accent: #ff003c;
+  --color-accent: #333333;
   
-  /* Sombras neon */
-  --shadow-neon-red: 0 0 10px 2px #ff003c;
-  --shadow-neon-red-strong: 0 0 20px 4px #ff003c;
+  /* Sombras sutiles */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   
   /* Bordes */
-  --border-thick: 4px solid #000000;
+  --border-thick: 3px solid #000000;
   --border-medium: 2px solid #000000;
   --border-thin: 1px solid #000000;
+  --border-light: 1px solid #e5e5e5;
   
   /* Fondos */
   --bg-white: #ffffff;
-  --bg-dark: #1a1a1a;
+  --bg-dark: #000000;
   --bg-gray: #f5f5f5;
+  --bg-gray-dark: #e5e5e5;
   
   /* Textos */
   --text-primary: #000000;
   --text-secondary: #666666;
+  --text-muted: #999999;
   --text-white: #ffffff;
   
   /* Espaciados */
@@ -34,9 +39,9 @@
   --spacing-xl: 3rem;
   
   /* Border radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
 /* ========================================
@@ -58,12 +63,16 @@ body {
 /* ========================================
    UTILIDADES
    ======================================== */
-.shadow-neon {
-  box-shadow: var(--shadow-neon-red);
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
 }
 
-.shadow-neon-strong {
-  box-shadow: var(--shadow-neon-red-strong);
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
 }
 
 .border-thick {
@@ -87,14 +96,13 @@ body {
    ======================================== */
 .navbar-dark {
   background-color: var(--bg-dark) !important;
-  border-bottom: var(--border-thick);
-  box-shadow: var(--shadow-neon-red);
+  border-bottom: var(--border-medium);
+  box-shadow: var(--shadow-md);
 }
 
 .navbar-brand h5 {
   color: var(--text-white);
   font-weight: bold;
-  text-shadow: var(--shadow-neon-red);
 }
 
 .nav-link {
@@ -103,8 +111,7 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--color-accent) !important;
-  text-shadow: 0 0 8px var(--color-accent);
+  color: var(--bg-gray) !important;
 }
 
 /* ========================================
@@ -113,18 +120,32 @@ body {
 .btn-custom {
   background: var(--bg-white);
   color: var(--text-primary);
-  border: 3px solid var(--color-secondary);
-  box-shadow: var(--shadow-neon-red);
-  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-md);
   padding: 0.75rem 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-custom:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-neon-red-strong);
+  background: var(--bg-dark);
+  color: var(--text-white);
+}
+
+.btn-dark-custom {
+  background: var(--bg-dark);
+  color: var(--text-white);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-dark-custom:hover {
+  background: var(--color-accent);
 }
 
 /* ========================================
@@ -132,7 +153,7 @@ body {
    ======================================== */
 .form-control-custom {
   border: var(--border-medium);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   padding: 0.75rem;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -141,7 +162,7 @@ body {
 .form-control-custom:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: var(--shadow-neon-red);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ========================================
@@ -149,16 +170,16 @@ body {
    ======================================== */
 .card-custom {
   background: var(--bg-white);
-  border: var(--border-thick);
-  box-shadow: var(--shadow-neon-red);
-  border-radius: var(--radius-md);
+  border: var(--border-medium);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .card-custom:hover {
-  box-shadow: var(--shadow-neon-red-strong);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 /* ========================================
@@ -166,8 +187,7 @@ body {
    ======================================== */
 .sidebar-custom {
   background-color: var(--bg-dark) !important;
-  border-right: var(--border-thick);
-  box-shadow: var(--shadow-neon-red);
+  border-right: var(--border-medium);
 }
 
 .sidebar-custom a {
@@ -176,8 +196,7 @@ body {
 }
 
 .sidebar-custom a:hover {
-  color: var(--color-accent);
-  text-shadow: 0 0 8px var(--color-accent);
+  color: var(--bg-gray);
   padding-left: 1.5rem;
 }
 
@@ -185,30 +204,81 @@ body {
    DROPDOWN
    ======================================== */
 .dropdown-menu {
-  border: var(--border-medium);
-  box-shadow: var(--shadow-neon-red);
-  border-radius: var(--radius-sm);
+  border: var(--border-thin);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
 }
 
 .dropdown-item:hover {
   background-color: var(--bg-gray);
-  color: var(--color-accent);
 }
 
 /* ========================================
-   ANIMACIONES
+   POST CARD - Red Social Educativa
    ======================================== */
-@keyframes neonPulse {
-  0%, 100% {
-    box-shadow: var(--shadow-neon-red);
-  }
-  50% {
-    box-shadow: var(--shadow-neon-red-strong);
-  }
+.post-card {
+  background: var(--bg-white);
+  border: var(--border-thin);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: all 0.3s ease;
 }
 
-.neon-pulse {
-  animation: neonPulse 2s infinite;
+.post-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.post-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-secondary);
+  object-fit: cover;
+}
+
+.post-author {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.post-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.post-content {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+.post-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: var(--border-light);
+}
+
+.post-action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.post-action-btn:hover {
+  color: var(--text-primary);
 }
 
 /* ========================================
@@ -220,6 +290,10 @@ body {
   }
   
   .card-custom {
+    padding: var(--spacing-sm);
+  }
+
+  .post-card {
     padding: var(--spacing-sm);
   }
 }

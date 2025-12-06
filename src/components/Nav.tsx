@@ -1,83 +1,149 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import SearchBar from "./nav/SearchBar";
-import UserDropdown from "./nav/UserDropdown";
-import NotificationDropdown from "./nav/NotificationDropdown";
-import { FaBookReader } from "react-icons/fa";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import SearchBar from './nav/SearchBar';
+import UserDropdown from './nav/UserDropdown';
+import NotificationDropdown from './nav/NotificationDropdown';
+import { ROUTES } from '../routes/routes';
 
 interface NavProps {
   onToggleSidebar: () => void;
 }
 
-function Nav({ onToggleSidebar }: NavProps) {
+const styles = {
+  nav: {
+    position: 'fixed' as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '56px',
+    background: '#000',
+    color: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 1rem',
+    zIndex: 1030,
+    borderBottom: '2px solid #333',
+  } as React.CSSProperties,
+  menuButton: {
+    background: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    color: '#fff',
+    fontSize: '1.25rem',
+    padding: '0.5rem',
+    marginRight: '0.75rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  } as React.CSSProperties,
+  brand: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    textDecoration: 'none',
+    color: '#fff',
+    marginRight: '2rem',
+  } as React.CSSProperties,
+  brandIcon: {
+    fontSize: '1.5rem',
+  } as React.CSSProperties,
+  brandText: {
+    fontSize: '1.25rem',
+    fontWeight: 'bold',
+    letterSpacing: '0.05em',
+  } as React.CSSProperties,
+  navLinks: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.25rem',
+    flex: 1,
+  } as React.CSSProperties,
+  navLink: {
+    color: '#ccc',
+    textDecoration: 'none',
+    padding: '0.5rem 1rem',
+    borderRadius: '6px',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    transition: 'all 0.2s ease',
+  } as React.CSSProperties,
+  navLinkActive: {
+    color: '#fff',
+    background: '#333',
+  } as React.CSSProperties,
+  rightSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    marginLeft: 'auto',
+  } as React.CSSProperties,
+};
 
-    return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <div className="container-fluid">
-                {/* Toggle sidebar button */}
-                <button
-                    className="btn btn-dark me-3"
-                    type="button"
-                    onClick={onToggleSidebar}
-                >
-                    <i className="fas fa-bars"></i>
-                </button>
+const Nav: React.FC<NavProps> = ({ onToggleSidebar }) => {
+  const location = useLocation();
 
-                {/* Brand/Logo */}
-                <Link className="navbar-brand" to="/" style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem" }}>
-                    <FaBookReader />
-                    <h5 className="mb-0">Reducax</h5>
-                </Link>
+  const isActive = (path: string) => 
+    location.pathname === path || location.pathname.startsWith(path + '/');
 
-                {/* Toggle para móvil */}
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+  const navItems = [
+    { path: ROUTES.FEED, label: 'Feed' },
+    { path: ROUTES.PROFILE, label: 'Perfil' },
+    { path: ROUTES.MESSAGES, label: 'Mensajes' },
+  ];
 
-                {/* Navbar content */}
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    {/* Links principales */}
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/">
-                                Feed
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile">
-                                Perfil
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/messages">
-                                Mensajes
-                            </Link>
-                        </li>
-                    </ul>
+  return (
+    <nav style={styles.nav}>
+      {/* Menu toggle button */}
+      <button
+        style={styles.menuButton}
+        onClick={onToggleSidebar}
+        aria-label="Abrir menú"
+      >
+        ☰
+      </button>
 
-                    {/* Buscador */}
-                    <SearchBar />
+      {/* Brand/Logo */}
+      <Link to={ROUTES.FEED} style={styles.brand}>
+        <span style={styles.brandIcon}>📚</span>
+        <span style={styles.brandText}>Reducax</span>
+      </Link>
 
-                    {/* Iconos de la derecha */}
-                    <div className="d-flex align-items-center ms-3">
-                        {/* Notificaciones */}
-                        <NotificationDropdown />
+      {/* Navigation Links */}
+      <div style={styles.navLinks}>
+        {navItems.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            style={{
+              ...styles.navLink,
+              ...(isActive(item.path) ? styles.navLinkActive : {}),
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive(item.path)) {
+                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.background = '#222';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive(item.path)) {
+                e.currentTarget.style.color = '#ccc';
+                e.currentTarget.style.background = 'transparent';
+              }
+            }}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
 
-                        {/* Usuario dropdown con foto */}
-                        <UserDropdown />
-                    </div>
-                </div>
-            </div>
-        </nav>
-    );
-}
+      {/* Right section */}
+      <div style={styles.rightSection}>
+        <SearchBar />
+        <NotificationDropdown />
+        <UserDropdown />
+      </div>
+    </nav>
+  );
+};
 
 export default Nav;
