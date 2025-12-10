@@ -29,11 +29,13 @@ INSTALACIÓN PASO A PASO
 PASO 1: Obtener el código fuente
 --------------------------------
 Opción A - Clonar con Git:
-   git clone https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado.git
-   cd Proyecto-React---Reducax---JavaScript-Avanzado
+   git clone https://github.com/JJMcpark/Proyecto-Reducax.git
+   cd Proyecto-Reducax
+   git checkout Proyecto
 
 Opción B - Descargar ZIP:
-   - Ir a: https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado
+   - Ir a: https://github.com/JJMcpark/Proyecto-Reducax
+   - Seleccionar la rama "Proyecto" en el selector de ramas
    - Click en "Code" -> "Download ZIP"
    - Extraer el archivo
    - Abrir terminal en la carpeta extraída
@@ -177,8 +179,8 @@ Backend Mock:
 CONTACTO Y SOPORTE
 --------------------------------------------------------------------------------
 
-Repositorio: https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado
-Rama actual: Josue
+Repositorio: https://github.com/JJMcpark/Proyecto-Reducax
+Rama: Proyecto
 
 ================================================================================
                     ¡Gracias por usar REDUCAX!
