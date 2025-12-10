@@ -7,25 +7,32 @@ import MainLayoutWrapper from './layouts/MainLayoutWrapper';
 import FeedPage from './pages/feed/FeedPage';
 import PagePerfil from './pages/person/PagePerfil';
 import MessagesPage from './pages/messages/MessagesPage';
+import PageGrupos from './pages/groups/PageGrupos';
+import PageInstituciones from './pages/institutions/PageInstituciones';
 import { ROUTES } from './routes';
 import { AuthProvider, useAuthContext } from './context/AuthContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import './App.css';
 
 // Layout para autenticación (sin sidebar)
-const AuthLayout = ({ children }: { children: React.ReactNode }) => (
-  <div
-    style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '1rem',
-      backgroundColor: '#f5f5f5',
-    }}
-  >
-    {children}
-  </div>
-);
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+  const { colors } = useTheme();
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        backgroundColor: colors.background,
+        transition: 'background-color 0.3s ease',
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 // Componente de ruta privada
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -125,17 +132,18 @@ function AppRoutes() {
 
       {/* Rutas protegidas con layout principal */}
       <Route
-        path="/feed/*"
         element={
           <PrivateRoute>
             <MainLayoutWrapper />
           </PrivateRoute>
         }
       >
-        <Route index element={<FeedPage />} />
-        <Route path="profile" element={<PagePerfil />} />
-        <Route path="messages" element={<MessagesPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path={ROUTES.FEED} element={<FeedPage />} />
+        <Route path={ROUTES.PROFILE} element={<PagePerfil />} />
+        <Route path={ROUTES.MESSAGES} element={<MessagesPage />} />
+        <Route path={ROUTES.GROUPS} element={<PageGrupos />} />
+        <Route path={ROUTES.INSTITUTIONS} element={<PageInstituciones />} />
+        <Route path={ROUTES.SETTINGS} element={<div style={{ padding: '2rem' }}><h1>Configuración</h1><p>Próximamente...</p></div>} />
       </Route>
 
       {/* 404 */}
@@ -146,11 +154,13 @@ function AppRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

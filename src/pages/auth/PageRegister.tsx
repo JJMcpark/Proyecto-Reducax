@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import { ROUTES } from '../../routes/routes';
-import type { RegisterCredentials } from '../../types/auth.types';
+import type { RegisterCredentials } from '../../types';
 
 const styles: React.CSSProperties = {
   background: '#fff',

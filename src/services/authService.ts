@@ -1,86 +1,81 @@
-import type { LoginCredentials, RegisterCredentials, User } from '../types/auth.types';
+import type { LoginCredentials, RegisterCredentials, User } from '../types';
+import { userStorage, initializeStorage } from './storageService';
 
-// Servicio de autenticación externo (simulado localmente para desarrollo)
-// En producción, cambiar a llamadas API reales
+// Servicio de autenticación usando localStorage
+// Los datos persisten aunque se cierre el navegador
 
 const STORAGE_KEYS = {
   USER: 'reducax_user',
   TOKEN: 'reducax_token',
-  USERS_DB: 'reducax_users_db', // Base de datos local de usuarios para pruebas
 } as const;
-
-// Simular delay de red
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Generar token simple
 const generateToken = (): string => {
   return `token_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
 };
 
-// Obtener usuarios registrados (simulado)
-const getStoredUsers = (): Array<{ username: string; email: string; password: string }> => {
-  const users = localStorage.getItem(STORAGE_KEYS.USERS_DB);
-  return users ? JSON.parse(users) : [];
-};
-
-// Guardar usuarios (simulado)
-const saveStoredUsers = (users: Array<{ username: string; email: string; password: string }>) => {
-  localStorage.setItem(STORAGE_KEYS.USERS_DB, JSON.stringify(users));
-};
+// Simular delay de red para mejor UX
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<User> {
-    await delay(800); // Simular latencia de red
+    await delay(500); // Simular latencia
 
-    const users = getStoredUsers();
-    const foundUser = users.find(
-      u => u.username === credentials.username && u.password === credentials.password
-    );
+    const foundUser = userStorage.getByUsername(credentials.username);
 
     if (!foundUser) {
-      throw new Error('Usuario o contraseña incorrectos');
+      throw new Error('Usuario no encontrado');
     }
 
+    if (foundUser.password !== credentials.password) {
+      throw new Error('Contraseña incorrecta');
+    }
+
+    // Crear objeto User sin la contraseña
     const user: User = {
-      id: `user_${Date.now()}`,
+      id: foundUser.id,
       username: foundUser.username,
       email: foundUser.email,
       token: generateToken(),
-      role: 'ESTUDIANTE',
-      institution: 'Universidad Nacional',
+      role: foundUser.role,
+      institution: foundUser.institution,
+      avatar: foundUser.avatar,
     };
 
     return user;
   },
 
   async register(credentials: RegisterCredentials): Promise<User> {
-    await delay(800); // Simular latencia de red
+    await delay(500); // Simular latencia
 
-    const users = getStoredUsers();
-    
-    // Verificar si ya existe
-    if (users.some(u => u.username === credentials.username)) {
+    // Verificar si el usuario ya existe
+    if (userStorage.getByUsername(credentials.username)) {
       throw new Error('El nombre de usuario ya está en uso');
     }
-    if (users.some(u => u.email === credentials.email)) {
+
+    if (userStorage.getByEmail(credentials.email)) {
       throw new Error('El email ya está registrado');
     }
 
-    // Registrar nuevo usuario
-    users.push({
+    // Crear nuevo usuario
+    const newUser = userStorage.create({
       username: credentials.username,
       email: credentials.email,
       password: credentials.password,
-    });
-    saveStoredUsers(users);
-
-    const user: User = {
-      id: `user_${Date.now()}`,
-      username: credentials.username,
-      email: credentials.email,
-      token: generateToken(),
       role: 'ESTUDIANTE',
       institution: credentials.institution || 'Sin institución',
+      bio: '',
+    });
+
+    // Retornar User sin contraseña
+    const user: User = {
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      token: generateToken(),
+      role: newUser.role,
+      institution: newUser.institution,
+      avatar: newUser.avatar,
     };
 
     return user;
@@ -109,17 +104,9 @@ export const authService = {
     return !!this.getToken();
   },
 
-  // Método para desarrollo: crear usuario de prueba
+  // Inicializar datos de prueba
   createTestUser(): void {
-    const users = getStoredUsers();
-    if (!users.some(u => u.username === 'demo')) {
-      users.push({
-        username: 'demo',
-        email: 'demo@reducax.edu',
-        password: 'demo123',
-      });
-      saveStoredUsers(users);
-      console.log('Usuario de prueba creado: demo / demo123');
-    }
+    initializeStorage();
+    console.log('Datos inicializados. Usuario de prueba: demo/demo123');
   }
 };

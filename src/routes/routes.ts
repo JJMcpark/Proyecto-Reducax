@@ -11,12 +11,13 @@ export const ROUTES = {
   FEED: '/feed',
   
   // Usuario
-  PROFILE: '/feed/profile',
-  MESSAGES: '/feed/messages',
-  SETTINGS: '/feed/settings',
+  PROFILE: '/profile',
+  MESSAGES: '/messages',
+  SETTINGS: '/settings',
   
-  // Instituciones
-  INSTITUTIONS: '/feed/institutions',
+  // Educación
+  INSTITUTIONS: '/institutions',
+  GROUPS: '/groups',
   
   // 404
   NOT_FOUND: '*',
