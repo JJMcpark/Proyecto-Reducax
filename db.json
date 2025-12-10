@@ -1,0 +1,458 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "demo",
+      "name": "Juan Pérez",
+      "email": "demo@reducax.edu",
+      "password": "demo123",
+      "role": "ESTUDIANTE",
+      "institution": "Universidad Nacional",
+      "avatar": null,
+      "bio": "Estudiante de Ingeniería de Sistemas. Apasionado por la tecnología y el aprendizaje colaborativo.",
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "username": "maria.garcia",
+      "name": "María García",
+      "email": "maria.garcia@reducax.edu",
+      "password": "prof123",
+      "role": "DOCENTE",
+      "institution": "Universidad Nacional",
+      "avatar": null,
+      "bio": "Docente de matemáticas y física con 15 años de experiencia.",
+      "createdAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "username": "carlos.mendoza",
+      "name": "Carlos Mendoza",
+      "email": "carlos.mendoza@reducax.edu",
+      "password": "carlos123",
+      "role": "ESTUDIANTE",
+      "institution": "Instituto Tecnológico",
+      "avatar": null,
+      "bio": "Estudiante de Ciencias de la Computación. Me encanta programar y resolver problemas.",
+      "createdAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "4",
+      "username": "ana.torres",
+      "name": "Ana Torres",
+      "email": "ana.torres@reducax.edu",
+      "password": "ana123",
+      "role": "DOCENTE",
+      "institution": "Universidad Nacional",
+      "avatar": null,
+      "bio": "Profesora de Programación y Estructuras de Datos.",
+      "createdAt": "2024-01-10T00:00:00Z"
+    },
+    {
+      "id": "5",
+      "username": "admin",
+      "name": "Administrador",
+      "email": "admin@reducax.edu",
+      "password": "admin123",
+      "role": "ADMINISTRADOR",
+      "institution": "REDUCAX",
+      "avatar": null,
+      "bio": "Administrador de la plataforma REDUCAX.",
+      "createdAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "authorId": "2",
+      "authorName": "María García",
+      "content": "¡Nueva guía de estudio disponible! 📚 He subido material complementario sobre Álgebra Lineal. Recuerden que el examen parcial es la próxima semana.\n\nTemas cubiertos:\n• Matrices y determinantes\n• Sistemas de ecuaciones lineales\n• Espacios vectoriales\n\n#Matemáticas #AlgebraLineal #Examen",
+      "subject": "Matemáticas",
+      "likes": 45,
+      "comments": 12,
+      "shares": 8,
+      "likedBy": ["1", "3", "4"],
+      "createdAt": "2024-12-04T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "authorId": "1",
+      "authorName": "Juan Pérez",
+      "content": "¿Alguien puede explicarme la diferencia entre una pila y una cola en estructuras de datos? Estoy preparando mi proyecto final y tengo algunas dudas.\n\nEntiendo que ambas son estructuras lineales pero no me queda clara la lógica de LIFO vs FIFO 🤔\n\n#ProgramaciónI #EstructurasDeDatos #Ayuda",
+      "subject": "Programación",
+      "likes": 23,
+      "comments": 18,
+      "shares": 2,
+      "likedBy": ["2", "4"],
+      "createdAt": "2024-12-04T09:15:00Z"
+    },
+    {
+      "id": "3",
+      "authorId": "2",
+      "authorName": "María García",
+      "content": "⚡ RECORDATORIO IMPORTANTE ⚡\n\nMañana tendremos clase práctica en el laboratorio de Física. Por favor traigan:\n\n✅ Calculadoras científicas\n✅ Guía de ejercicios (páginas 45-60)\n✅ Cuaderno de apuntes\n\nEl tema será: Ondas electromagnéticas y óptica.\n\n#FísicaII #Laboratorio #Práctica",
+      "subject": "Física",
+      "likes": 67,
+      "comments": 5,
+      "shares": 15,
+      "likedBy": ["1", "3"],
+      "createdAt": "2024-12-03T18:45:00Z"
+    },
+    {
+      "id": "4",
+      "authorId": "4",
+      "authorName": "Ana Torres",
+      "content": "🎉 Felicidades a todos los que aprobaron el parcial de Programación!\n\nLos resultados ya están publicados en el sistema. Si tienen dudas sobre su calificación, pueden pasar por mi oficina en horario de tutoría.\n\nRecuerden: ¡El próximo tema es Recursividad!\n\n#Programación #Resultados #Recursividad",
+      "subject": "Programación",
+      "likes": 89,
+      "comments": 24,
+      "shares": 5,
+      "likedBy": ["1", "2", "3"],
+      "createdAt": "2024-12-03T15:20:00Z"
+    },
+    {
+      "id": "5",
+      "authorId": "3",
+      "authorName": "Carlos Mendoza",
+      "content": "Acabo de terminar mi proyecto de Machine Learning! 🤖\n\nUtilicé Python con TensorFlow para crear un modelo de clasificación de imágenes. El modelo alcanzó un 94% de precisión.\n\nSi alguien está interesado en colaborar en proyectos similares, ¡escríbanme!\n\n#MachineLearning #Python #TensorFlow #IA",
+      "subject": "Inteligencia Artificial",
+      "likes": 156,
+      "comments": 42,
+      "shares": 28,
+      "likedBy": ["1", "2", "4"],
+      "createdAt": "2024-12-02T20:10:00Z"
+    },
+    {
+      "id": "6",
+      "authorId": "5",
+      "authorName": "Administrador",
+      "content": "📢 ANUNCIO OFICIAL 📢\n\nLa plataforma REDUCAX tendrá mantenimiento programado este sábado de 2:00 AM a 6:00 AM.\n\nDurante este tiempo, algunos servicios podrían no estar disponibles. Disculpen las molestias.\n\n#Mantenimiento #REDUCAX #Aviso",
+      "subject": "Anuncios",
+      "likes": 34,
+      "comments": 8,
+      "shares": 12,
+      "likedBy": [],
+      "createdAt": "2024-12-02T14:00:00Z"
+    },
+    {
+      "id": "7",
+      "authorId": "1",
+      "authorName": "Juan Pérez",
+      "content": "Tip de estudio del día 💡\n\nLa técnica Pomodoro me ha ayudado muchísimo:\n• 25 minutos de estudio enfocado\n• 5 minutos de descanso\n• Cada 4 pomodoros, descanso largo de 15-20 min\n\n¿Ustedes qué técnicas de estudio usan?\n\n#TipsDeEstudio #Pomodoro #Productividad",
+      "subject": "Consejos",
+      "likes": 78,
+      "comments": 31,
+      "shares": 19,
+      "likedBy": ["2", "3", "4"],
+      "createdAt": "2024-12-01T11:30:00Z"
+    },
+    {
+      "id": "8",
+      "authorId": "4",
+      "authorName": "Ana Torres",
+      "content": "🔥 Recursos gratuitos para aprender programación:\n\n1. freeCodeCamp - Cursos completos\n2. The Odin Project - Web development\n3. CS50 de Harvard - Introducción a CS\n4. LeetCode - Práctica de algoritmos\n\n¿Conocen otros recursos que recomienden?\n\n#RecursosProgramación #Aprendizaje #Gratis",
+      "subject": "Recursos",
+      "likes": 234,
+      "comments": 56,
+      "shares": 87,
+      "likedBy": ["1", "2", "3"],
+      "createdAt": "2024-11-30T16:45:00Z"
+    },
+    {
+      "id": "9",
+      "authorId": "3",
+      "authorName": "Carlos Mendoza",
+      "content": "🚀 Nuevo proyecto open source que creé:\n\nSe llama 'EstudioFlow' - una app para organizar horarios de estudio con Pomodoro integrado.\n\nStack: React + Node.js + MongoDB\n\nLink del repo en mi perfil. ¡PRs bienvenidos!\n\n#OpenSource #React #NodeJS #Productividad",
+      "subject": "Desarrollo Web",
+      "likes": 128,
+      "comments": 35,
+      "shares": 22,
+      "likedBy": ["1", "4"],
+      "createdAt": "2024-12-05T08:00:00Z"
+    },
+    {
+      "id": "10",
+      "authorId": "2",
+      "authorName": "María García",
+      "content": "📐 Ejercicio del día - Cálculo Diferencial:\n\nEncuentra la derivada de: f(x) = x³ · ln(x)\n\nUsa la regla del producto. El primero que responda correctamente tiene puntos extra! 🎯\n\n#CálculoDiferencial #Matemáticas #EjercicioDelDía",
+      "subject": "Matemáticas",
+      "likes": 56,
+      "comments": 28,
+      "shares": 4,
+      "likedBy": ["1", "3"],
+      "createdAt": "2024-12-05T07:30:00Z"
+    },
+    {
+      "id": "11",
+      "authorId": "1",
+      "authorName": "Juan Pérez",
+      "content": "Pregunta para los compañeros de Ingeniería:\n\n¿Qué laptop recomiendan para programar? Tengo un presupuesto de aprox. $1000 USD.\n\nRequisitos:\n• Buena RAM (16GB+)\n• SSD rápido\n• Pantalla decente para largas sesiones\n\n#Laptops #Programación #Consejos",
+      "subject": "Tecnología",
+      "likes": 45,
+      "comments": 67,
+      "shares": 8,
+      "likedBy": ["3", "4"],
+      "createdAt": "2024-12-04T16:20:00Z"
+    },
+    {
+      "id": "12",
+      "authorId": "4",
+      "authorName": "Ana Torres",
+      "content": "⏰ Cambio de horario para el próximo martes:\n\nLa clase de Programación II será de 2:00 PM a 4:00 PM (en lugar de 10:00 AM).\n\nMisma aula: Lab 202\n\nPor favor, confirmen asistencia en los comentarios.\n\n#Programación #CambioHorario #Lab202",
+      "subject": "Anuncios",
+      "likes": 23,
+      "comments": 45,
+      "shares": 3,
+      "likedBy": ["1"],
+      "createdAt": "2024-12-04T14:00:00Z"
+    },
+    {
+      "id": "13",
+      "authorId": "3",
+      "authorName": "Carlos Mendoza",
+      "content": "🎮 Después de 3 meses, terminé mi clon de Tetris en JavaScript puro!\n\nAprendí muchísimo sobre:\n• Canvas API\n• Game loops\n• Colisiones\n• Rotación de piezas\n\nEl código está comentado para principiantes. Link en bio.\n\n#JavaScript #GameDev #Tetris #Tutorial",
+      "subject": "Desarrollo Web",
+      "likes": 189,
+      "comments": 52,
+      "shares": 41,
+      "likedBy": ["1", "2", "4"],
+      "createdAt": "2024-12-03T21:00:00Z"
+    },
+    {
+      "id": "14",
+      "authorId": "2",
+      "authorName": "María García",
+      "content": "🏆 Resultados del concurso de Matemáticas:\n\n🥇 1er lugar: Carlos Mendoza\n🥈 2do lugar: Laura Sánchez  \n🥉 3er lugar: Pedro Ramírez\n\n¡Felicidades a todos los participantes! El nivel estuvo muy alto este año.\n\n#Matemáticas #Concurso #Felicidades",
+      "subject": "Matemáticas",
+      "likes": 156,
+      "comments": 38,
+      "shares": 25,
+      "likedBy": ["1", "3", "4"],
+      "createdAt": "2024-12-03T12:00:00Z"
+    },
+    {
+      "id": "15",
+      "authorId": "1",
+      "authorName": "Juan Pérez",
+      "content": "Comparto mis apuntes de Base de Datos 📝\n\nTemas incluidos:\n• Modelo Entidad-Relación\n• Normalización (1FN, 2FN, 3FN)\n• SQL básico y avanzado\n• Índices y optimización\n\nFormato PDF, link en el primer comentario!\n\n#BaseDeDatos #SQL #Apuntes #Recursos",
+      "subject": "Base de Datos",
+      "likes": 203,
+      "comments": 78,
+      "shares": 95,
+      "likedBy": ["2", "3", "4"],
+      "createdAt": "2024-12-02T09:30:00Z"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "1",
+      "participants": ["1", "2"],
+      "lastMessageAt": "2024-12-04T10:30:00Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "1",
+      "conversationId": "1",
+      "senderId": "1",
+      "content": "Hola profesora, tengo una duda sobre el tema 3 del examen.",
+      "createdAt": "2024-12-04T10:15:00Z",
+      "isRead": true
+    },
+    {
+      "id": "2",
+      "conversationId": "1",
+      "senderId": "2",
+      "content": "Hola! Claro, dime ¿cuál es tu duda específica?",
+      "createdAt": "2024-12-04T10:20:00Z",
+      "isRead": true
+    },
+    {
+      "id": "3",
+      "conversationId": "1",
+      "senderId": "1",
+      "content": "Es sobre las matrices inversas, no entiendo bien cómo calcularlas.",
+      "createdAt": "2024-12-04T10:25:00Z",
+      "isRead": true
+    },
+    {
+      "id": "4",
+      "conversationId": "1",
+      "senderId": "2",
+      "content": "Claro, puedo ayudarte con esa duda sobre el examen.",
+      "createdAt": "2024-12-04T10:30:00Z",
+      "isRead": true
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "userId": "1",
+      "type": "like",
+      "message": "Prof. María García le dio me gusta a tu publicación",
+      "isRead": false,
+      "createdAt": "2024-12-04T10:35:00Z"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "type": "comment",
+      "message": "Carlos Mendoza comentó en tu publicación",
+      "isRead": false,
+      "createdAt": "2024-12-04T09:30:00Z"
+    }
+  ],
+  "institutions": [
+    {
+      "id": "1",
+      "name": "Universidad Nacional Autónoma",
+      "type": "Universidad",
+      "city": "Bogotá",
+      "description": "Institución de educación superior pública líder en investigación y formación académica.",
+      "members": 15234,
+      "verified": true,
+      "icon": "🏫"
+    },
+    {
+      "id": "2",
+      "name": "Instituto Tecnológico del Valle",
+      "type": "Instituto",
+      "city": "Cali",
+      "description": "Centro educativo especializado en carreras de ingeniería y tecnología.",
+      "members": 8567,
+      "verified": true,
+      "icon": "⚙️"
+    },
+    {
+      "id": "3",
+      "name": "Colegio Mayor de Occidente",
+      "type": "Colegio",
+      "city": "Medellín",
+      "description": "Instituto de educación superior con énfasis en ciencias exactas.",
+      "members": 5432,
+      "verified": true,
+      "icon": "📐"
+    },
+    {
+      "id": "4",
+      "name": "Universidad de Antioquia",
+      "type": "Universidad",
+      "city": "Medellín",
+      "description": "Universidad pública colombiana con tradición en humanidades y ciencias.",
+      "members": 12345,
+      "verified": true,
+      "icon": "📚"
+    }
+  ],
+  "studyGroups": [
+    {
+      "id": "1",
+      "name": "Álgebra Lineal - Grupo 101",
+      "subject": "Matemáticas",
+      "description": "Grupo de estudio para el curso de Álgebra Lineal. Resolvemos ejercicios y compartimos apuntes semanalmente.",
+      "members": 24,
+      "institution": "Universidad Nacional Autónoma",
+      "level": "Intermedio",
+      "icon": "📐",
+      "createdBy": "2"
+    },
+    {
+      "id": "2",
+      "name": "Estructura de Datos",
+      "subject": "Programación",
+      "description": "Aprenderemos pilas, colas, árboles y grafos. Práctica diaria con ejercicios y proyectos colaborativos.",
+      "members": 31,
+      "institution": "Instituto Tecnológico del Valle",
+      "level": "Intermedio",
+      "icon": "💻",
+      "createdBy": "3"
+    },
+    {
+      "id": "3",
+      "name": "Física II - Grupo de Apoyo",
+      "subject": "Física",
+      "description": "Nos ayudamos mutuamente en temas de termodinámica, electricidad y magnetismo.",
+      "members": 18,
+      "institution": "Colegio Mayor de Occidente",
+      "level": "Avanzado",
+      "icon": "⚡",
+      "createdBy": "4"
+    },
+    {
+      "id": "4",
+      "name": "Python para Data Science",
+      "subject": "Programación",
+      "description": "Aprende Python aplicado a ciencia de datos, pandas, numpy y visualización.",
+      "members": 45,
+      "institution": "Universidad Nacional Autónoma",
+      "level": "Principiante",
+      "icon": "🐍",
+      "createdBy": "1"
+    },
+    {
+      "id": "5",
+      "name": "Preparación ICFES",
+      "subject": "Pruebas Estandarizadas",
+      "description": "Prepárate para el ICFES con nosotros. Simulacros semanales y estrategias.",
+      "members": 42,
+      "institution": "Colegio Mayor de Occidente",
+      "level": "Avanzado",
+      "icon": "✏️",
+      "createdBy": "2"
+    },
+    {
+      "id": "6",
+      "name": "Inglés Avanzado - Business",
+      "subject": "Idiomas",
+      "description": "Enfocado en inglés de negocios. Simulaciones de reuniones y presentaciones.",
+      "members": 19,
+      "institution": "Universidad de Antioquia",
+      "level": "Avanzado",
+      "icon": "🌐",
+      "createdBy": "4"
+    }
+  ],
+  "trends": [
+    { "id": "1", "tag": "#AlgebraLineal", "posts": 234 },
+    { "id": "2", "tag": "#ExámenesParciales", "posts": 189 },
+    { "id": "3", "tag": "#ProgramaciónI", "posts": 156 },
+    { "id": "4", "tag": "#FísicaII", "posts": 98 },
+    { "id": "5", "tag": "#ProyectoFinal", "posts": 87 },
+    { "id": "6", "tag": "#MachineLearning", "posts": 76 },
+    { "id": "7", "tag": "#Pomodoro", "posts": 65 }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "postId": "1",
+      "authorId": "1",
+      "content": "Gracias por la guía profesora, muy útil para el examen!",
+      "createdAt": "2024-12-04T11:00:00Z",
+      "likes": 5
+    },
+    {
+      "id": "2",
+      "postId": "1",
+      "authorId": "3",
+      "content": "¿Hay algún video explicativo sobre espacios vectoriales?",
+      "createdAt": "2024-12-04T11:30:00Z",
+      "likes": 3
+    },
+    {
+      "id": "3",
+      "postId": "2",
+      "authorId": "4",
+      "content": "Una pila es LIFO (Last In First Out) - piensa en una pila de platos. Una cola es FIFO (First In First Out) - como la fila del supermercado.",
+      "createdAt": "2024-12-04T09:30:00Z",
+      "likes": 12
+    },
+    {
+      "id": "4",
+      "postId": "7",
+      "authorId": "3",
+      "content": "¡Yo también uso Pomodoro! Es excelente para mantener el enfoque.",
+      "createdAt": "2024-12-01T12:00:00Z",
+      "likes": 8
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+================================================================================
+                    PROMPT PARA CREAR REDUCAX
+                    Red Social Educativa con React + TypeScript
+================================================================================
+
+Crea una aplicación web completa para una RED SOCIAL EDUCATIVA usando React 18 
+con Vite y TypeScript. La aplicación debe conectar estudiantes, docentes e 
+instituciones educativas para un aprendizaje colaborativo.
+
+================================================================================
+REQUISITOS FUNCIONALES:
+================================================================================
+
+AUTENTICACIÓN:
+- Login y registro de usuarios
+- Roles: Estudiante, Docente, Administrador
+- Persistencia de sesión con localStorage
+- Credenciales de demo para pruebas
+
+FEED DE PUBLICACIONES:
+- Crear publicaciones con contenido y materia/tema
+- Sistema de likes (toggle)
+- Sistema de comentarios que se guardan
+- Botón guardar/bookmark para posts
+- Botón actualizar feed
+- Posts ordenados cronológicamente (más recientes primero)
+
+PERFIL DE USUARIO:
+- Vista de perfil con avatar, bio, institución, carrera
+- Estadísticas: seguidores, siguiendo, posts, horas de estudio, grupos
+- Pestañas: Publicaciones, Guardados, Acerca de, Ajustes
+- Edición de perfil inline
+- Compartir perfil (crea post automático)
+- Ver posts guardados con opción de quitar
+
+PÁGINA DE POST ÚNICO:
+- Vista completa del post desde guardados
+- Sección de comentarios expandida
+- Botón volver a página anterior
+- Ruta: /post/:id
+
+MENSAJERÍA:
+- Lista de conversaciones
+- Chat en tiempo real (simulado)
+- Búsqueda de conversaciones
+
+GRUPOS DE ESTUDIO:
+- Lista de grupos disponibles
+- Información: nombre, descripción, miembros, materia
+- Modal para crear nuevo grupo
+
+INSTITUCIONES:
+- Catálogo de instituciones educativas
+- Información: nombre, tipo, ubicación, estudiantes, rating
+- Filtros por tipo
+
+NAVEGACIÓN:
+- Sidebar izquierdo con menú principal
+- Navbar superior con:
+  - Buscador
+  - Iconos de acciones (home, mensajes, grupos)
+  - Temporizador Pomodoro integrado (+5/-5 minutos)
+  - Logo REDUCAX centrado
+  - Toggle modo oscuro/claro
+  - Notificaciones con badge
+  - Dropdown de usuario con perfil y logout
+
+MODO OSCURO/CLARO:
+- Toggle en navbar
+- Colores B/N minimalistas
+- Transiciones suaves
+- Persistencia de preferencia
+
+FOOTER:
+- Links de navegación principales
+- Sección de recursos (con alerta "En desarrollo")
+- Sección legal (con alerta "En desarrollo")
+- Copyright
+
+================================================================================
+REQUISITOS TÉCNICOS:
+================================================================================
+
+STACK:
+- React 18 con TypeScript
+- Vite 6.x como bundler
+- React Router DOM 7 para navegación
+- CSS-in-JS (estilos inline con objetos)
+- Font Awesome 6.5.1 (CDN) para iconos
+
+ARQUITECTURA:
+src/
+├── components/       # Componentes reutilizables
+│   ├── Nav.tsx           # Navbar principal
+│   ├── Sidebar.tsx       # Menú lateral
+│   ├── PostCard.tsx      # Tarjeta de publicación
+│   ├── Footer.tsx        # Pie de página
+│   ├── PomodoroTimer.tsx # Temporizador Pomodoro
+│   ├── CustomAlert.tsx   # Modal de alertas
+│   ├── CreateGroupModal.tsx
+│   ├── NotFound.tsx
+│   └── nav/
+│       ├── ThemeToggle.tsx
+│       ├── NotificationBell.tsx
+│       └── UserDropdown.tsx
+├── context/          # Contextos React
+│   ├── AuthContext.tsx   # Autenticación y usuario
+│   └── ThemeContext.tsx  # Modo oscuro/claro
+├── hooks/            # Hooks personalizados
+│   ├── usePosts.ts       # CRUD de posts, likes, comentarios
+│   ├── useMessages.ts    # Mensajería
+│   ├── useNotifications.ts
+│   ├── useLocalStorage.ts
+│   └── useUtils.ts       # Debounce, clipboard, etc.
+├── pages/            # Páginas de la app
+│   ├── auth/
+│   │   ├── PageLogin.tsx
+│   │   └── PageRegister.tsx
+│   ├── feed/
+│   │   └── FeedPage.tsx
+│   ├── person/
+│   │   └── PagePerfil.tsx
+│   ├── messages/
+│   │   └── MessagesPage.tsx
+│   ├── groups/
+│   │   └── PageGrupos.tsx
+│   ├── institutions/
+│   │   └── PageInstituciones.tsx
+│   ├── PostPage.tsx
+│   └── PageWelcome.tsx
+├── routes/           # Configuración de rutas
+│   ├── routes.ts
+│   └── index.ts
+├── services/         # Servicios y APIs
+│   ├── storageService.ts  # localStorage CRUD completo
+│   ├── authService.ts
+│   ├── groupsService.ts
+│   └── institutionsService.ts
+├── types/            # Tipos TypeScript
+│   ├── user.types.ts
+│   ├── post.types.ts
+│   ├── message.types.ts
+│   └── index.ts
+├── layouts/
+│   └── MainLayoutWrapper.tsx
+├── styles/
+│   └── shared.styles.ts
+└── utils/
+    ├── helpers.ts
+    └── constants.ts
+
+ESTADO Y PERSISTENCIA:
+- React Context API para estado global (Auth, Theme)
+- localStorage para persistencia de:
+  - Usuario autenticado
+  - Posts y comentarios
+  - Mensajes y conversaciones
+  - Notificaciones
+  - Bookmarks por usuario
+  - Preferencia de tema
+
+RUTAS:
+- / (Welcome - pública)
+- /login (pública)
+- /register (pública)
+- /feed (privada)
+- /profile (privada)
+- /messages (privada)
+- /groups (privada)
+- /institutions (privada)
+- /settings (privada)
+- /post/:id (privada)
+- * (404)
+
+================================================================================
+DISEÑO Y ESTILOS:
+================================================================================
+
+PALETA DE COLORES (Minimalista B/N):
+
+Modo Claro:
+- Background: #ffffff
+- Background Secondary: #f5f5f5
+- Card Background: #ffffff
+- Text Primary: #000000
+- Text Secondary: #333333
+- Text Muted: #666666
+- Border: #000000
+- Border Light: #e0e0e0
+- Accent: #000000
+- Nav Background: #ffffff
+- Nav Text: #000000
+
+Modo Oscuro:
+- Background: #000000
+- Background Secondary: #111111
+- Card Background: #111111
+- Text Primary: #ffffff
+- Text Secondary: #cccccc
+- Text Muted: #888888
+- Border: #ffffff
+- Border Light: #333333
+- Accent: #ffffff
+- Nav Background: #000000
+- Nav Text: #ffffff
+
+TIPOGRAFÍA:
+- Font Family: system-ui, -apple-system, sans-serif
+- Títulos: bold, tamaños grandes
+- Cuerpo: regular, buena legibilidad
+
+COMPONENTES UI:
+- Bordes redondeados (8-12px)
+- Sombras sutiles en cards
+- Transiciones suaves (0.2-0.3s)
+- Botones con hover effects
+- Inputs con focus visible
+- Responsive design (mobile-first)
+
+================================================================================
+DATOS DE EJEMPLO:
+================================================================================
+
+USUARIOS:
+1. demo / demo123 (Estudiante)
+2. maria.garcia / prof123 (Docente)
+3. carlos.mendoza / carlos123 (Estudiante)
+4. ana.torres / ana123 (Docente)
+5. admin / admin123 (Administrador)
+
+POSTS DE EJEMPLO (8-15 posts):
+- Guías de estudio
+- Preguntas de estudiantes
+- Anuncios de profesores
+- Tips de productividad
+- Recursos compartidos
+- Proyectos completados
+- Ejercicios del día
+
+GRUPOS DE ESTUDIO:
+- Álgebra Lineal - Grupo 101
+- Estructura de Datos
+- Física II - Grupo de Apoyo
+- Cálculo Diferencial
+- Programación Web
+
+INSTITUCIONES:
+- Universidad Nacional
+- Instituto Tecnológico
+- Universidad Privada del Norte
+- Centro de Formación Técnica
+
+================================================================================
+FUNCIONALIDADES ESPECIALES:
+================================================================================
+
+TEMPORIZADOR POMODORO:
+- Timer circular con progreso visual
+- Botones +5/-5 para ajustar tiempo
+- Play/Pause y Reset
+- Notificación al terminar
+- Posición: en el navbar
+
+SISTEMA DE BOOKMARKS:
+- Toggle guardar/quitar en cada post
+- Almacenamiento por usuario en localStorage
+- Vista en pestaña "Guardados" del perfil
+- Click en post guardado abre /post/:id
+- Botón para quitar de guardados
+
+COMENTARIOS:
+- Input para nuevo comentario
+- Lista de comentarios existentes
+- Persistencia en localStorage
+- Contador actualizado en tiempo real
+
+ALERTAS PERSONALIZADAS:
+- Modal centrado
+- Tipos: success, error, info, warning
+- Iconos según tipo
+- Botón de cierre
+- Auto-close opcional
+
+================================================================================
+ARCHIVOS A GENERAR:
+================================================================================
+
+- package.json con dependencias
+- vite.config.ts
+- tsconfig.json
+- index.html con Font Awesome CDN
+- Todos los archivos de src/
+- db.json con datos de ejemplo
+- README.md con documentación
+- INSTALACION.txt con tutorial
+
+================================================================================
+COMANDOS DE DESARROLLO:
+================================================================================
+
+npm install          # Instalar dependencias
+npm run dev          # Servidor de desarrollo (localhost:5173)
+npm run build        # Build de producción
+npm run preview      # Preview del build
+
+Para datos mock (opcional):
+npx json-server --watch db.json --port 3001
+
+================================================================================
+NOTAS IMPORTANTES:
+================================================================================
+
+1. La app debe funcionar 100% offline usando localStorage
+2. No requiere backend real, todo se simula localmente
+3. El diseño debe ser profesional y minimalista
+4. Responsive para móvil y desktop
+5. Código limpio y bien organizado
+6. TypeScript estricto sin errores
+7. Componentes reutilizables
+8. Hooks personalizados para lógica compleja
+
+================================================================================
