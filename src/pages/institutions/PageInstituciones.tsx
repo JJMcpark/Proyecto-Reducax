@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomAlert from '../../components/CustomAlert';
 import institutionsService from '../../services/institutionsService';
-import type { Institution } from '../../domain';
+import type { Institution } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
 
 // Función para crear estilos con tema

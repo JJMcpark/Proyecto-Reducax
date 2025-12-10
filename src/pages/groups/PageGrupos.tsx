@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CustomAlert from '../../components/CustomAlert';
 import CreateGroupModal from '../../components/CreateGroupModal';
 import groupsService from '../../services/groupsService';
-import type { StudyGroup, StudyGroupLevel } from '../../domain';
+import type { StudyGroup, StudyGroupLevel } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
 
 // Función para crear estilos con tema

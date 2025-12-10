@@ -41,6 +41,19 @@ export type {
   NotificationState,
 } from './notification.types';
 
+// ==================== GRUPOS ====================
+export type {
+  StudyGroupLevel,
+  StudyGroup,
+  CreateStudyGroupData,
+} from './group.types';
+
+// ==================== INSTITUCIONES ====================
+export type {
+  Institution,
+  CreateInstitutionData,
+} from './institution.types';
+
 // ==================== UI ====================
 export type {
   MenuItem,

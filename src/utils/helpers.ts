@@ -125,3 +125,90 @@ export const formatRole = (role: string): string => {
   };
   return roleMap[role] || role;
 };
+
+// ==================== USER HELPERS ====================
+
+/**
+ * Verifica si un usuario puede moderar contenido
+ */
+export const canUserModerate = (role?: string): boolean => {
+  return role === 'ADMINISTRADOR' || role === 'DOCENTE';
+};
+
+/**
+ * Verifica si un usuario es administrador
+ */
+export const isAdmin = (role?: string): boolean => {
+  return role === 'ADMINISTRADOR';
+};
+
+/**
+ * Obtiene el avatar por defecto
+ */
+export const getDefaultAvatar = (avatar?: string): string => {
+  return avatar || '/default-avatar.png';
+};
+
+// ==================== NOTIFICATION HELPERS ====================
+
+/**
+ * Obtiene el icono de una notificación según su tipo
+ */
+export const getNotificationIcon = (type: string): string => {
+  const icons: Record<string, string> = {
+    like: '❤️',
+    comment: '💬',
+    follow: '👤',
+    mention: '@',
+    announcement: '📢',
+  };
+  return icons[type] || '🔔';
+};
+
+// ==================== GROUP/INSTITUTION HELPERS ====================
+
+/**
+ * Crea un nuevo grupo con valores por defecto
+ */
+export const createStudyGroup = (
+  data: { name: string; subject: string; description: string; minMembers: number; level: string },
+  creatorId: number,
+  institution: string
+) => ({
+  id: Date.now(),
+  name: data.name,
+  subject: data.subject,
+  description: data.description,
+  members: data.minMembers,
+  institution,
+  level: data.level,
+  createdAt: new Date().toISOString().split('T')[0],
+  createdBy: creatorId,
+  icon: '📚',
+});
+
+/**
+ * Crea una nueva institución con valores por defecto
+ */
+export const createInstitution = (data: { name: string; location: string; description: string }) => ({
+  id: Date.now(),
+  name: data.name,
+  location: data.location,
+  description: data.description,
+  students: 0,
+  professors: 0,
+  groups: 0,
+  rating: 0,
+  icon: '🏛️',
+  createdAt: new Date().toISOString().split('T')[0],
+});
+
+/**
+ * Formatea la hora de un mensaje
+ */
+export const formatMessageTime = (timestamp: string): string => {
+  return new Date(timestamp).toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};

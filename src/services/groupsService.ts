@@ -3,17 +3,13 @@
  * Usa localStorage para persistencia
  */
 
-import { 
-  StudyGroup, 
-  StudyGroupManager, 
-  type IStudyGroup, 
-  type IStudyGroupCreate 
-} from '../domain';
+import type { StudyGroup, CreateStudyGroupData } from '../types';
+import { createStudyGroup } from '../utils/helpers';
 
 const STORAGE_KEY = 'reducax_study_groups';
 
 // Datos iniciales de ejemplo
-const initialGroups: IStudyGroup[] = [
+const initialGroups: StudyGroup[] = [
   {
     id: 1,
     name: 'Matemáticas Avanzadas',
@@ -67,7 +63,7 @@ const initialGroups: IStudyGroup[] = [
 /**
  * Obtiene los grupos del localStorage
  */
-const getStoredGroups = (): IStudyGroup[] => {
+const getStoredGroups = (): StudyGroup[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
@@ -83,7 +79,7 @@ const getStoredGroups = (): IStudyGroup[] => {
 /**
  * Guarda los grupos en localStorage
  */
-const saveGroups = (groups: IStudyGroup[]): void => {
+const saveGroups = (groups: StudyGroup[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
 };
 
@@ -92,8 +88,7 @@ const groupsService = {
    * Obtiene todos los grupos
    */
   getGroups: async (): Promise<StudyGroup[]> => {
-    const groups = getStoredGroups();
-    return groups.map(g => StudyGroup.fromJSON(g));
+    return getStoredGroups();
   },
 
   /**
@@ -101,17 +96,16 @@ const groupsService = {
    */
   getGroupById: async (id: string | number): Promise<StudyGroup | null> => {
     const groups = getStoredGroups();
-    const group = groups.find(g => String(g.id) === String(id));
-    return group ? StudyGroup.fromJSON(group) : null;
+    return groups.find(g => String(g.id) === String(id)) || null;
   },
 
   /**
    * Crea un nuevo grupo
    */
-  createGroup: async (data: IStudyGroupCreate, userId: number): Promise<StudyGroup> => {
+  createGroup: async (data: CreateStudyGroupData, userId: number): Promise<StudyGroup> => {
     const groups = getStoredGroups();
-    const newGroup = StudyGroup.create(data, userId, 'Mi Institución');
-    groups.unshift(newGroup.toJSON());
+    const newGroup = createStudyGroup(data, userId, 'Mi Institución') as StudyGroup;
+    groups.unshift(newGroup);
     saveGroups(groups);
     return newGroup;
   },
@@ -119,14 +113,14 @@ const groupsService = {
   /**
    * Actualiza un grupo
    */
-  updateGroup: async (id: string | number, updates: Partial<IStudyGroup>): Promise<StudyGroup | null> => {
+  updateGroup: async (id: string | number, updates: Partial<StudyGroup>): Promise<StudyGroup | null> => {
     const groups = getStoredGroups();
     const index = groups.findIndex(g => String(g.id) === String(id));
     if (index === -1) return null;
     
     groups[index] = { ...groups[index], ...updates };
     saveGroups(groups);
-    return StudyGroup.fromJSON(groups[index]);
+    return groups[index];
   },
 
   /**
@@ -152,7 +146,7 @@ const groupsService = {
     
     groups[index].members += 1;
     saveGroups(groups);
-    return StudyGroup.fromJSON(groups[index]);
+    return groups[index];
   },
 
   /**
@@ -167,17 +161,37 @@ const groupsService = {
       groups[index].members -= 1;
     }
     saveGroups(groups);
-    return StudyGroup.fromJSON(groups[index]);
+    return groups[index];
   },
 
   /**
-   * Obtiene el manager de grupos
+   * Filtra grupos por nivel
    */
-  getManager: (): StudyGroupManager => {
+  filterByLevel: async (level: string): Promise<StudyGroup[]> => {
     const groups = getStoredGroups();
-    return new StudyGroupManager(groups);
+    return groups.filter(g => g.level === level);
+  },
+
+  /**
+   * Filtra grupos por materia
+   */
+  filterBySubject: async (subject: string): Promise<StudyGroup[]> => {
+    const groups = getStoredGroups();
+    return groups.filter(g => g.subject.toLowerCase().includes(subject.toLowerCase()));
+  },
+
+  /**
+   * Busca grupos por término
+   */
+  searchGroups: async (term: string): Promise<StudyGroup[]> => {
+    const groups = getStoredGroups();
+    const searchTerm = term.toLowerCase();
+    return groups.filter(g => 
+      g.name.toLowerCase().includes(searchTerm) ||
+      g.subject.toLowerCase().includes(searchTerm) ||
+      g.description.toLowerCase().includes(searchTerm)
+    );
   },
 };
 
 export default groupsService;
-export type { StudyGroup, IStudyGroup, IStudyGroupCreate };

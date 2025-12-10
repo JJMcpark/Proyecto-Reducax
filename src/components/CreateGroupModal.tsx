@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { StudyGroupLevel } from '../domain';
+import type { StudyGroupLevel } from '../types';
 
 interface CreateGroupModalProps {
   isOpen: boolean;

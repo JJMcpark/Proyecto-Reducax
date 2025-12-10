@@ -3,17 +3,13 @@
  * Usa localStorage para persistencia
  */
 
-import { 
-  Institution, 
-  InstitutionManager, 
-  type IInstitution, 
-  type IInstitutionCreate 
-} from '../domain';
+import type { Institution, CreateInstitutionData } from '../types';
+import { createInstitution } from '../utils/helpers';
 
 const STORAGE_KEY = 'reducax_institutions';
 
 // Datos iniciales de ejemplo
-const initialInstitutions: IInstitution[] = [
+const initialInstitutions: Institution[] = [
   {
     id: 1,
     name: 'Universidad Central',
@@ -67,7 +63,7 @@ const initialInstitutions: IInstitution[] = [
 /**
  * Obtiene las instituciones del localStorage
  */
-const getStoredInstitutions = (): IInstitution[] => {
+const getStoredInstitutions = (): Institution[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
@@ -83,7 +79,7 @@ const getStoredInstitutions = (): IInstitution[] => {
 /**
  * Guarda las instituciones en localStorage
  */
-const saveInstitutions = (institutions: IInstitution[]): void => {
+const saveInstitutions = (institutions: Institution[]): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(institutions));
 };
 
@@ -92,8 +88,7 @@ const institutionsService = {
    * Obtiene todas las instituciones
    */
   getInstitutions: async (): Promise<Institution[]> => {
-    const institutions = getStoredInstitutions();
-    return institutions.map(i => Institution.fromJSON(i));
+    return getStoredInstitutions();
   },
 
   /**
@@ -101,17 +96,16 @@ const institutionsService = {
    */
   getInstitutionById: async (id: string | number): Promise<Institution | null> => {
     const institutions = getStoredInstitutions();
-    const institution = institutions.find(i => String(i.id) === String(id));
-    return institution ? Institution.fromJSON(institution) : null;
+    return institutions.find(i => String(i.id) === String(id)) || null;
   },
 
   /**
    * Crea una nueva institución
    */
-  createInstitution: async (data: IInstitutionCreate): Promise<Institution> => {
+  createInstitution: async (data: CreateInstitutionData): Promise<Institution> => {
     const institutions = getStoredInstitutions();
-    const newInstitution = Institution.create(data);
-    institutions.unshift(newInstitution.toJSON());
+    const newInstitution = createInstitution(data) as Institution;
+    institutions.unshift(newInstitution);
     saveInstitutions(institutions);
     return newInstitution;
   },
@@ -119,14 +113,14 @@ const institutionsService = {
   /**
    * Actualiza una institución
    */
-  updateInstitution: async (id: string | number, updates: Partial<IInstitution>): Promise<Institution | null> => {
+  updateInstitution: async (id: string | number, updates: Partial<Institution>): Promise<Institution | null> => {
     const institutions = getStoredInstitutions();
     const index = institutions.findIndex(i => String(i.id) === String(id));
     if (index === -1) return null;
     
     institutions[index] = { ...institutions[index], ...updates };
     saveInstitutions(institutions);
-    return Institution.fromJSON(institutions[index]);
+    return institutions[index];
   },
 
   /**
@@ -147,18 +141,29 @@ const institutionsService = {
    */
   searchInstitutions: async (term: string): Promise<Institution[]> => {
     const institutions = getStoredInstitutions();
-    const manager = new InstitutionManager(institutions);
-    return manager.search(term);
+    const searchTerm = term.toLowerCase();
+    return institutions.filter(i => 
+      i.name.toLowerCase().includes(searchTerm) ||
+      i.location.toLowerCase().includes(searchTerm) ||
+      i.description.toLowerCase().includes(searchTerm)
+    );
   },
 
   /**
-   * Obtiene el manager de instituciones
+   * Ordena instituciones por rating
    */
-  getManager: (): InstitutionManager => {
+  sortByRating: async (): Promise<Institution[]> => {
     const institutions = getStoredInstitutions();
-    return new InstitutionManager(institutions);
+    return [...institutions].sort((a, b) => b.rating - a.rating);
+  },
+
+  /**
+   * Ordena instituciones por cantidad de estudiantes
+   */
+  sortByStudents: async (): Promise<Institution[]> => {
+    const institutions = getStoredInstitutions();
+    return [...institutions].sort((a, b) => b.students - a.students);
   },
 };
 
 export default institutionsService;
-export type { Institution, IInstitution, IInstitutionCreate };
