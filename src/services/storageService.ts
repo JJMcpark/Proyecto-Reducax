@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   NOTIFICATIONS: 'reducax_notifications',
   CURRENT_USER: 'reducax_user',
   TOKEN: 'reducax_token',
+  BOOKMARKS: 'reducax_bookmarks',
 } as const;
 
 // Tipos
@@ -27,6 +28,7 @@ export interface StoredUser {
 export interface StoredPost {
   id: string;
   authorId: string;
+  authorName?: string;
   content: string;
   subject?: string;
   attachments?: {
@@ -35,7 +37,9 @@ export interface StoredPost {
     name?: string;
   }[];
   likes: string[]; // IDs de usuarios que dieron like
+  likedBy?: string[]; // Alias para compatibilidad
   comments: StoredComment[];
+  commentsList?: StoredComment[]; // Alias para compatibilidad
   shares: number;
   createdAt: string;
 }
@@ -238,14 +242,62 @@ export const postStorage = {
   initSamplePosts: (): void => {
     const posts = postStorage.getAll();
     if (posts.length === 0) {
-      const demoUser = userStorage.getByUsername('demo');
-      if (demoUser) {
-        postStorage.create({
-          authorId: demoUser.id,
-          content: '¡Bienvenidos a Reducax! 🎓 Esta es la nueva red social educativa donde estudiantes y docentes pueden compartir conocimiento. #Educación #Reducax',
-          subject: 'General',
-        });
-      }
+      // Inicializar con posts de ejemplo
+      const samplePosts = [
+        {
+          authorId: '2',
+          authorName: 'María García',
+          content: '¡Nueva guía de estudio disponible! 📚 He subido material complementario sobre Álgebra Lineal. Recuerden que el examen parcial es la próxima semana.\n\nTemas cubiertos:\n• Matrices y determinantes\n• Sistemas de ecuaciones lineales\n• Espacios vectoriales\n\n#Matemáticas #AlgebraLineal #Examen',
+          subject: 'Matemáticas',
+        },
+        {
+          authorId: '1',
+          authorName: 'Juan Pérez',
+          content: '¿Alguien puede explicarme la diferencia entre una pila y una cola en estructuras de datos? Estoy preparando mi proyecto final y tengo algunas dudas.\n\nEntiendo que ambas son estructuras lineales pero no me queda clara la lógica de LIFO vs FIFO 🤔\n\n#ProgramaciónI #EstructurasDeDatos #Ayuda',
+          subject: 'Programación',
+        },
+        {
+          authorId: '4',
+          authorName: 'Ana Torres',
+          content: '🎉 Felicidades a todos los que aprobaron el parcial de Programación!\n\nLos resultados ya están publicados en el sistema. Si tienen dudas sobre su calificación, pueden pasar por mi oficina en horario de tutoría.\n\nRecuerden: ¡El próximo tema es Recursividad!\n\n#Programación #Resultados #Recursividad',
+          subject: 'Programación',
+        },
+        {
+          authorId: '3',
+          authorName: 'Carlos Mendoza',
+          content: 'Acabo de terminar mi proyecto de Machine Learning! 🤖\n\nUtilicé Python con TensorFlow para crear un modelo de clasificación de imágenes. El modelo alcanzó un 94% de precisión.\n\nSi alguien está interesado en colaborar en proyectos similares, ¡escríbanme!\n\n#MachineLearning #Python #TensorFlow #IA',
+          subject: 'Inteligencia Artificial',
+        },
+        {
+          authorId: '1',
+          authorName: 'Juan Pérez',
+          content: 'Tip de estudio del día 💡\n\nLa técnica Pomodoro me ha ayudado muchísimo:\n• 25 minutos de estudio enfocado\n• 5 minutos de descanso\n• Cada 4 pomodoros, descanso largo de 15-20 min\n\n¿Ustedes qué técnicas de estudio usan?\n\n#TipsDeEstudio #Pomodoro #Productividad',
+          subject: 'Consejos',
+        },
+        {
+          authorId: '4',
+          authorName: 'Ana Torres',
+          content: '🔥 Recursos gratuitos para aprender programación:\n\n1. freeCodeCamp - Cursos completos\n2. The Odin Project - Web development\n3. CS50 de Harvard - Introducción a CS\n4. LeetCode - Práctica de algoritmos\n\n¿Conocen otros recursos que recomienden?\n\n#RecursosProgramación #Aprendizaje #Gratis',
+          subject: 'Recursos',
+        },
+        {
+          authorId: '3',
+          authorName: 'Carlos Mendoza',
+          content: '🚀 Nuevo proyecto open source que creé:\n\nSe llama "EstudioFlow" - una app para organizar horarios de estudio con Pomodoro integrado.\n\nStack: React + Node.js + MongoDB\n\nLink del repo en mi perfil. ¡PRs bienvenidos!\n\n#OpenSource #React #NodeJS #Productividad',
+          subject: 'Desarrollo Web',
+        },
+        {
+          authorId: '2',
+          authorName: 'María García',
+          content: '📐 Ejercicio del día - Cálculo Diferencial:\n\nEncuentra la derivada de: f(x) = x³ · ln(x)\n\nUsa la regla del producto. El primero que responda correctamente tiene puntos extra! 🎯\n\n#CálculoDiferencial #Matemáticas #EjercicioDelDía',
+          subject: 'Matemáticas',
+        },
+      ];
+      
+      // Crear posts en orden inverso para que aparezcan en orden correcto
+      samplePosts.reverse().forEach(postData => {
+        postStorage.create(postData);
+      });
     }
   },
 };
@@ -390,6 +442,44 @@ export const notificationStorage = {
   },
 };
 
+// ==================== BOOKMARKS ====================
+export const bookmarkStorage = {
+  getAll: (userId: string): string[] => {
+    const allBookmarks = getItem<Record<string, string[]>>(STORAGE_KEYS.BOOKMARKS, {});
+    return allBookmarks[userId] || [];
+  },
+
+  toggle: (userId: string, postId: string): boolean => {
+    const allBookmarks = getItem<Record<string, string[]>>(STORAGE_KEYS.BOOKMARKS, {});
+    if (!allBookmarks[userId]) {
+      allBookmarks[userId] = [];
+    }
+    
+    const index = allBookmarks[userId].indexOf(postId);
+    const isBookmarked = index === -1;
+    
+    if (isBookmarked) {
+      allBookmarks[userId].push(postId);
+    } else {
+      allBookmarks[userId].splice(index, 1);
+    }
+    
+    setItem(STORAGE_KEYS.BOOKMARKS, allBookmarks);
+    return isBookmarked;
+  },
+
+  isBookmarked: (userId: string, postId: string): boolean => {
+    const bookmarks = bookmarkStorage.getAll(userId);
+    return bookmarks.includes(postId);
+  },
+
+  getBookmarkedPosts: (userId: string): StoredPost[] => {
+    const bookmarkIds = bookmarkStorage.getAll(userId);
+    const allPosts = postStorage.getAll();
+    return allPosts.filter(p => bookmarkIds.includes(p.id));
+  },
+};
+
 // ==================== INICIALIZACIÓN ====================
 export const initializeStorage = (): void => {
   userStorage.initDemo();
@@ -402,5 +492,6 @@ export default {
   messages: messageStorage,
   conversations: conversationStorage,
   notifications: notificationStorage,
+  bookmarks: bookmarkStorage,
   initialize: initializeStorage,
 };

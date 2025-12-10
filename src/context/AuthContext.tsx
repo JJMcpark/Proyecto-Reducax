@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { authService } from '../services/authService';
+import { initializeStorage } from '../services/storageService';
 import type { User, LoginCredentials, RegisterCredentials } from '../types';
 
 interface AuthContextType {
@@ -38,6 +39,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     };
 
+    // Inicializar storage con usuarios y posts de ejemplo
+    initializeStorage();
+    
     // Crear usuario de prueba al iniciar
     authService.createTestUser();
     checkAuth();

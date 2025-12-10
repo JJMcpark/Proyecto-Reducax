@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuthContext } from '../../context/AuthContext';
+import { bookmarkStorage, StoredPost } from '../../services/storageService';
 
 interface UserProfile {
   id: string;
@@ -46,6 +47,7 @@ const PagePerfil = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [savedPosts, setSavedPosts] = useState<StoredPost[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Form states for editing
@@ -102,12 +104,25 @@ const PagePerfil = () => {
           socialLinks: {}
         });
       } finally {
+        // Load saved posts from localStorage
+        if (user?.id) {
+          const bookmarked = bookmarkStorage.getBookmarkedPosts(user.id);
+          setSavedPosts(bookmarked);
+        }
         setLoading(false);
       }
     };
     
     fetchProfile();
   }, [userId, user]);
+
+  // Reload saved posts when tab changes to 'saved'
+  useEffect(() => {
+    if (activeTab === 'saved' && user?.id) {
+      const bookmarked = bookmarkStorage.getBookmarkedPosts(user.id);
+      setSavedPosts(bookmarked);
+    }
+  }, [activeTab, user?.id]);
 
   const handleSaveProfile = async () => {
     if (!userProfile) return;
@@ -710,13 +725,81 @@ const PagePerfil = () => {
           )}
 
           {activeTab === 'saved' && (
-            <div style={styles.emptyState}>
-              <i className="fa-solid fa-bookmark" style={{ fontSize: '3rem', marginBottom: '1rem', display: 'block' }}></i>
-              <p>No tienes publicaciones guardadas</p>
-              <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                Guarda publicaciones para verlas después
-              </p>
-            </div>
+            <>
+              {savedPosts.length > 0 ? (
+                savedPosts.map((post) => (
+                  <div 
+                    key={post.id} 
+                    style={{ ...styles.postCard, cursor: 'pointer' }}
+                    onClick={() => navigate(`/post/${post.id}`)}
+                  >
+                    <div style={styles.postHeader}>
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background: theme === 'dark' ? '#fff' : '#000',
+                        color: theme === 'dark' ? '#000' : '#fff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold'
+                      }}>
+                        {post.authorName?.charAt(0).toUpperCase() || post.authorId?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                      <div style={styles.postMeta}>
+                        <div style={styles.postAuthor}>{post.authorName || 'Usuario'}</div>
+                        <div style={styles.postTime}>{formatTimeAgo(post.createdAt)}</div>
+                      </div>
+                      <button 
+                        style={{ ...styles.postAction, marginLeft: 'auto', color: theme === 'dark' ? '#fff' : '#000' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (user?.id) {
+                            bookmarkStorage.toggle(user.id, post.id);
+                            setSavedPosts(prev => prev.filter(p => p.id !== post.id));
+                          }
+                        }}
+                        title="Quitar de guardados"
+                      >
+                        <i className="fa-solid fa-bookmark"></i>
+                      </button>
+                    </div>
+                    {post.subject && (
+                      <span style={{
+                        display: 'inline-block',
+                        background: theme === 'dark' ? '#fff' : '#000',
+                        color: theme === 'dark' ? '#000' : '#fff',
+                        padding: '0.25rem 0.75rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: 'bold',
+                        marginBottom: '0.5rem'
+                      }}>
+                        {post.subject}
+                      </span>
+                    )}
+                    <p style={styles.postContent}>{post.content}</p>
+                    <div style={styles.postActions}>
+                      <span style={styles.postAction}>
+                        <i className="fa-regular fa-heart"></i> {post.likes?.length || 0}
+                      </span>
+                      <span style={styles.postAction}>
+                        <i className="fa-regular fa-comment"></i> {post.comments?.length || 0}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div style={styles.emptyState}>
+                  <i className="fa-solid fa-bookmark" style={{ fontSize: '3rem', marginBottom: '1rem', display: 'block' }}></i>
+                  <p>No tienes publicaciones guardadas</p>
+                  <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                    Guarda publicaciones para verlas después
+                  </p>
+                </div>
+              )}
+            </>
           )}
 
           {activeTab === 'about' && (

@@ -1,0 +1,185 @@
+================================================================================
+                    REDUCAX - RED SOCIAL EDUCATIVA
+                    Tutorial de Instalación
+================================================================================
+
+DESCRIPCIÓN DEL PROYECTO
+------------------------
+REDUCAX es una red social educativa desarrollada con React + TypeScript + Vite.
+Conecta estudiantes, docentes e instituciones para un aprendizaje colaborativo.
+
+--------------------------------------------------------------------------------
+REQUISITOS PREVIOS
+--------------------------------------------------------------------------------
+
+1. Node.js versión 18 o superior
+   - Descargar desde: https://nodejs.org/
+   - Verificar instalación: node --version
+
+2. npm (incluido con Node.js)
+   - Verificar instalación: npm --version
+
+3. Git (opcional, para clonar el repositorio)
+   - Descargar desde: https://git-scm.com/
+
+--------------------------------------------------------------------------------
+INSTALACIÓN PASO A PASO
+--------------------------------------------------------------------------------
+
+PASO 1: Obtener el código fuente
+--------------------------------
+Opción A - Clonar con Git:
+   git clone https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado.git
+   cd Proyecto-React---Reducax---JavaScript-Avanzado
+
+Opción B - Descargar ZIP:
+   - Ir a: https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado
+   - Click en "Code" -> "Download ZIP"
+   - Extraer el archivo
+   - Abrir terminal en la carpeta extraída
+
+PASO 2: Instalar dependencias
+-----------------------------
+   npm install
+
+   Esto instalará todas las dependencias necesarias:
+   - React 18
+   - TypeScript
+   - Vite
+   - React Router DOM
+   - Y otras dependencias del proyecto
+
+PASO 3: Iniciar servidor de desarrollo
+--------------------------------------
+   npm run dev
+
+   Esto iniciará el servidor en: http://localhost:5173/
+
+PASO 4: Iniciar el servidor de datos (JSON Server)
+--------------------------------------------------
+   Abrir otra terminal y ejecutar:
+   
+   npx json-server --watch db.json --port 3001
+
+   Esto iniciará el API mock en: http://localhost:3001/
+
+--------------------------------------------------------------------------------
+CREDENCIALES DE PRUEBA
+--------------------------------------------------------------------------------
+
+Usuario Demo (Estudiante):
+   - Email: demo@reducax.edu
+   - Contraseña: demo123
+
+Usuario Docente:
+   - Email: maria.garcia@reducax.edu
+   - Contraseña: prof123
+
+Usuario Admin:
+   - Email: admin@reducax.edu
+   - Contraseña: admin123
+
+--------------------------------------------------------------------------------
+COMANDOS DISPONIBLES
+--------------------------------------------------------------------------------
+
+npm run dev        - Inicia el servidor de desarrollo
+npm run build      - Genera la versión de producción en /dist
+npm run preview    - Previsualiza la versión de producción
+npm run lint       - Ejecuta el linter ESLint
+
+--------------------------------------------------------------------------------
+ESTRUCTURA DEL PROYECTO
+--------------------------------------------------------------------------------
+
+Reducax/
+├── src/
+│   ├── components/     # Componentes reutilizables (Nav, Sidebar, PostCard...)
+│   ├── context/        # Contextos React (Auth, Theme)
+│   ├── hooks/          # Hooks personalizados (usePosts, useMessages...)
+│   ├── pages/          # Páginas de la aplicación
+│   │   ├── auth/       # Login, Register
+│   │   ├── feed/       # Feed principal
+│   │   ├── groups/     # Grupos de estudio
+│   │   ├── institutions/ # Instituciones
+│   │   ├── messages/   # Mensajería
+│   │   └── person/     # Perfil de usuario
+│   ├── routes/         # Configuración de rutas
+│   ├── services/       # Servicios (API, Storage)
+│   ├── styles/         # Estilos compartidos
+│   ├── types/          # Tipos TypeScript
+│   └── utils/          # Utilidades
+├── public/             # Archivos estáticos
+├── db.json             # Base de datos mock (JSON Server)
+├── package.json        # Dependencias y scripts
+└── vite.config.ts      # Configuración de Vite
+
+--------------------------------------------------------------------------------
+FUNCIONALIDADES PRINCIPALES
+--------------------------------------------------------------------------------
+
+✓ Autenticación (Login/Registro)
+✓ Feed de publicaciones educativas
+✓ Sistema de likes y comentarios
+✓ Guardar publicaciones (bookmarks)
+✓ Mensajería directa
+✓ Grupos de estudio
+✓ Instituciones educativas
+✓ Perfil de usuario editable
+✓ Modo oscuro/claro
+✓ Temporizador Pomodoro integrado
+✓ Notificaciones
+✓ Persistencia en localStorage
+
+--------------------------------------------------------------------------------
+SOLUCIÓN DE PROBLEMAS COMUNES
+--------------------------------------------------------------------------------
+
+1. Error "ENOENT: no such file or directory"
+   - Asegúrate de estar en la carpeta correcta del proyecto
+   - Ejecuta: npm install
+
+2. Puerto 5173 en uso
+   - Cierra otras instancias de Vite
+   - O cambia el puerto en vite.config.ts
+
+3. JSON Server no responde
+   - Verifica que esté ejecutándose en puerto 3001
+   - Comprueba que db.json existe en la raíz
+
+4. Estilos no cargan correctamente
+   - Limpia caché del navegador (Ctrl+Shift+R)
+   - Verifica que Font Awesome CDN esté accesible
+
+--------------------------------------------------------------------------------
+TECNOLOGÍAS UTILIZADAS
+--------------------------------------------------------------------------------
+
+Frontend:
+- React 18
+- TypeScript
+- Vite 6.4.1
+- React Router DOM 7
+
+Estilos:
+- CSS-in-JS (estilos inline con temas)
+- Font Awesome 6.5.1 (iconos)
+
+Estado:
+- React Context API
+- localStorage para persistencia
+
+Backend Mock:
+- JSON Server
+- db.json como base de datos
+
+--------------------------------------------------------------------------------
+CONTACTO Y SOPORTE
+--------------------------------------------------------------------------------
+
+Repositorio: https://github.com/JJMcpark/Proyecto-React---Reducax---JavaScript-Avanzado
+Rama actual: Josue
+
+================================================================================
+                    ¡Gracias por usar REDUCAX!
+================================================================================

@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import CustomAlert from './CustomAlert';
 
 const Footer: React.FC = () => {
   const { colors } = useTheme();
   const currentYear = new Date().getFullYear();
+  const [showWipAlert, setShowWipAlert] = useState(false);
+  const [wipFeature, setWipFeature] = useState('');
+
+  const handleWipClick = (e: React.MouseEvent, featureName: string) => {
+    e.preventDefault();
+    setWipFeature(featureName);
+    setShowWipAlert(true);
+  };
 
   const styles = {
     footer: {
@@ -99,13 +108,13 @@ const Footer: React.FC = () => {
         {/* Recursos */}
         <div style={styles.section}>
           <h4 style={styles.title}>Recursos</h4>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Centro de Ayuda')}>
             <i className="fa-solid fa-circle-question"></i> Centro de Ayuda
           </a>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Guía de Uso')}>
             <i className="fa-solid fa-book"></i> Guía de Uso
           </a>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Comunidad')}>
             <i className="fa-solid fa-users"></i> Comunidad
           </a>
         </div>
@@ -113,13 +122,13 @@ const Footer: React.FC = () => {
         {/* Legal */}
         <div style={styles.section}>
           <h4 style={styles.title}>Legal</h4>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Términos de Servicio')}>
             <i className="fa-solid fa-file-contract"></i> Términos de Servicio
           </a>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Política de Privacidad')}>
             <i className="fa-solid fa-shield"></i> Política de Privacidad
           </a>
-          <a href="#" style={styles.link}>
+          <a href="#" style={styles.link} onClick={(e) => handleWipClick(e, 'Cookies')}>
             <i className="fa-solid fa-cookie"></i> Cookies
           </a>
         </div>
@@ -128,6 +137,15 @@ const Footer: React.FC = () => {
       <div style={styles.bottom}>
         © {currentYear} REDUCAX - Red Social Educativa. Todos los derechos reservados.
       </div>
+
+      {/* WIP Alert */}
+      <CustomAlert
+        isOpen={showWipAlert}
+        onClose={() => setShowWipAlert(false)}
+        title="🚧 En Desarrollo"
+        message={`La sección "${wipFeature}" está actualmente en desarrollo. ¡Próximamente disponible!`}
+        type="info"
+      />
     </footer>
   );
 };

@@ -160,7 +160,7 @@ const FeedPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Usar hook de posts
-  const { posts, loading, createPost, toggleLike, loadPosts } = usePosts(user?.id);
+  const { posts, loading, createPost, toggleLike, loadPosts, addComment, toggleBookmark } = usePosts(user?.id);
 
   // Estilos dinámicos basados en el tema
   const themedStyles = {
@@ -246,6 +246,15 @@ const FeedPage: React.FC = () => {
 
   const handleLike = (postId: string) => {
     toggleLike(postId);
+  };
+
+  const handleComment = (postId: string, content: string) => {
+    addComment(postId, content);
+  };
+
+  const handleBookmark = (postId: string) => {
+    if (!user) return;
+    toggleBookmark(postId);
   };
 
   // Trending topics educativos
@@ -349,7 +358,13 @@ const FeedPage: React.FC = () => {
             </div>
           ) : (
             posts.map((post) => (
-              <PostCard key={post.id} post={post} onLike={handleLike} />
+              <PostCard 
+                key={post.id} 
+                post={post} 
+                onLike={handleLike}
+                onComment={handleComment}
+                onBookmark={handleBookmark}
+              />
             ))
           )}
         </div>

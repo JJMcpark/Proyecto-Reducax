@@ -57,6 +57,10 @@ export interface Post {
   id: string;
   /** Información del autor */
   author: PostAuthor;
+  /** Nombre del autor (alternativo para compatibilidad) */
+  authorName?: string;
+  /** ID del autor (alternativo para compatibilidad) */
+  authorId?: string;
   /** Contenido de texto de la publicación */
   content: string;
   /** Materia o tema relacionado */
@@ -65,6 +69,8 @@ export interface Post {
   attachments?: PostAttachment[];
   /** Cantidad de likes */
   likes: number;
+  /** IDs de usuarios que dieron like */
+  likedBy?: string[];
   /** Cantidad de comentarios */
   comments: number;
   /** Cantidad de veces compartido */
@@ -75,6 +81,8 @@ export interface Post {
   isBookmarked?: boolean;
   /** Fecha de creación */
   createdAt: string;
+  /** Lista de comentarios */
+  commentsList?: PostComment[];
 }
 
 /**

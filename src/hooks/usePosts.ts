@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { postStorage, userStorage, type StoredPost } from '../services/storageService';
+import { postStorage, userStorage, bookmarkStorage, type StoredPost, type StoredComment } from '../services/storageService';
 import type { Post, UserRole } from '../types';
 
 /**
  * Hook para gestionar publicaciones del feed
- * Encapsula toda la lógica de CRUD y likes
+ * Encapsula toda la lógica de CRUD, likes, comentarios y bookmarks
  */
 export function usePosts(currentUserId: string | undefined) {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -31,8 +31,9 @@ export function usePosts(currentUserId: string | undefined) {
       comments: storedPost.comments.length,
       shares: storedPost.shares,
       isLiked: storedPost.likes.includes(userId),
-      isBookmarked: false,
+      isBookmarked: bookmarkStorage.isBookmarked(userId, storedPost.id),
       createdAt: storedPost.createdAt,
+      commentsList: storedPost.comments,
     };
   }, []);
 
@@ -108,13 +109,45 @@ export function usePosts(currentUserId: string | undefined) {
     return success;
   }, []);
 
-  // Agregar comentario (placeholder - requiere implementar en storageService)
-  const addComment = useCallback((_postId: string, _content: string) => {
-    if (!currentUserId) return false;
-    // TODO: Implementar cuando se agregue addComment a storageService
-    console.warn('addComment no implementado aún en storageService');
-    return false;
+  // Agregar comentario
+  const addComment = useCallback((postId: string, content: string): StoredComment | null => {
+    if (!currentUserId || !content.trim()) return null;
+    
+    const comment = postStorage.addComment(postId, currentUserId, content.trim());
+    if (comment) {
+      setPosts(prev => prev.map(p =>
+        p.id === postId
+          ? {
+              ...p,
+              comments: p.comments + 1,
+              commentsList: [...(p.commentsList || []), comment],
+            }
+          : p
+      ));
+      return comment;
+    }
+    return null;
   }, [currentUserId]);
+
+  // Toggle bookmark
+  const toggleBookmark = useCallback((postId: string): boolean => {
+    if (!currentUserId) return false;
+    
+    const isBookmarked = bookmarkStorage.toggle(currentUserId, postId);
+    setPosts(prev => prev.map(p =>
+      p.id === postId
+        ? { ...p, isBookmarked }
+        : p
+    ));
+    return isBookmarked;
+  }, [currentUserId]);
+
+  // Obtener posts guardados
+  const getBookmarkedPosts = useCallback((): Post[] => {
+    if (!currentUserId) return [];
+    const storedPosts = bookmarkStorage.getBookmarkedPosts(currentUserId);
+    return storedPosts.map(p => mapStoredPostToPost(p, currentUserId));
+  }, [currentUserId, mapStoredPostToPost]);
 
   return {
     posts,
@@ -125,5 +158,7 @@ export function usePosts(currentUserId: string | undefined) {
     toggleLike,
     deletePost,
     addComment,
+    toggleBookmark,
+    getBookmarkedPosts,
   };
 }

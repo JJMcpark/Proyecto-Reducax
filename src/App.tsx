@@ -9,6 +9,7 @@ import PagePerfil from './pages/person/PagePerfil';
 import MessagesPage from './pages/messages/MessagesPage';
 import PageGrupos from './pages/groups/PageGrupos';
 import PageInstituciones from './pages/institutions/PageInstituciones';
+import PostPage from './pages/PostPage';
 import { ROUTES } from './routes';
 import { AuthProvider, useAuthContext } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -139,6 +140,7 @@ function AppRoutes() {
         }
       >
         <Route path={ROUTES.FEED} element={<FeedPage />} />
+        <Route path={ROUTES.POST} element={<PostPage />} />
         <Route path={ROUTES.PROFILE} element={<PagePerfil />} />
         <Route path={ROUTES.MESSAGES} element={<MessagesPage />} />
         <Route path={ROUTES.GROUPS} element={<PageGrupos />} />

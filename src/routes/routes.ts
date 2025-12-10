@@ -10,6 +10,9 @@ export const ROUTES = {
   // Feed principal
   FEED: '/feed',
   
+  // Post individual
+  POST: '/post/:id',
+  
   // Usuario
   PROFILE: '/profile',
   MESSAGES: '/messages',

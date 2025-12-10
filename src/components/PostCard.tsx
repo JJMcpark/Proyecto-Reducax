@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import type { Post } from '../types';
+import { useNavigate } from 'react-router-dom';
+import type { Post, PostComment } from '../types';
 import { useTheme } from '../context/ThemeContext';
+import { userStorage } from '../services/storageService';
 
 // Props del componente
 interface PostCardProps {
   post: Post;
   onLike?: (postId: string) => void;
+  onComment?: (postId: string, content: string) => void;
+  onBookmark?: (postId: string) => void;
+  showFullComments?: boolean;
 }
 
 // Función para formatear el tiempo relativo
@@ -24,11 +29,16 @@ const formatTimeAgo = (dateString: string): string => {
   return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 };
 
-const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, onLike, onComment, onBookmark, showFullComments = false }) => {
   const { colors, theme } = useTheme();
+  const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likesCount, setLikesCount] = useState(post.likes);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
+  const [showComments, setShowComments] = useState(showFullComments);
+  const [newComment, setNewComment] = useState('');
+  const [localComments, setLocalComments] = useState<PostComment[]>(post.commentsList || []);
+  const [commentsCount, setCommentsCount] = useState(post.comments);
 
   // Estilos dinámicos con tema
   const styles: Record<string, React.CSSProperties> = {
@@ -150,26 +160,128 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
       transition: 'all 0.2s ease',
       borderRadius: '50%',
     },
+    commentsSection: {
+      marginTop: '1rem',
+      paddingTop: '1rem',
+      borderTop: `1px solid ${colors.border}`,
+    },
+    commentForm: {
+      display: 'flex',
+      gap: '0.5rem',
+      marginBottom: '1rem',
+    },
+    commentInput: {
+      flex: 1,
+      padding: '0.5rem 0.75rem',
+      borderRadius: '20px',
+      border: `1px solid ${colors.border}`,
+      background: colors.backgroundSecondary,
+      color: colors.textPrimary,
+      fontSize: '0.875rem',
+      outline: 'none',
+    },
+    commentButton: {
+      padding: '0.5rem 1rem',
+      borderRadius: '20px',
+      border: 'none',
+      background: colors.accent,
+      color: colors.background,
+      cursor: 'pointer',
+      fontSize: '0.875rem',
+      fontWeight: '500',
+    },
+    commentItem: {
+      display: 'flex',
+      gap: '0.5rem',
+      marginBottom: '0.75rem',
+    },
+    commentAvatar: {
+      width: '32px',
+      height: '32px',
+      borderRadius: '50%',
+      background: colors.accent,
+      color: colors.background,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '0.75rem',
+      fontWeight: 'bold',
+      flexShrink: 0,
+    },
+    commentContent: {
+      flex: 1,
+      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      padding: '0.5rem 0.75rem',
+      borderRadius: '12px',
+    },
+    commentAuthor: {
+      fontWeight: '600',
+      fontSize: '0.8125rem',
+      color: colors.textPrimary,
+    },
+    commentText: {
+      fontSize: '0.8125rem',
+      color: colors.textPrimary,
+      marginTop: '0.125rem',
+    },
+    commentTime: {
+      fontSize: '0.6875rem',
+      color: colors.textSecondary,
+      marginTop: '0.25rem',
+    },
   };
 
   // Sincronizar con props cuando cambien
   React.useEffect(() => {
     setIsLiked(post.isLiked);
     setLikesCount(post.likes);
-  }, [post.isLiked, post.likes]);
+    setIsBookmarked(post.isBookmarked);
+    setLocalComments(post.commentsList || []);
+    setCommentsCount(post.comments);
+  }, [post.isLiked, post.likes, post.isBookmarked, post.commentsList, post.comments]);
 
   const handleLike = () => {
     if (onLike) {
       onLike(post.id);
-    } else {
-      // Fallback para compatibilidad
-      setIsLiked(!isLiked);
-      setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
     }
+    setIsLiked(!isLiked);
+    setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
   };
 
   const handleBookmark = () => {
+    if (onBookmark) {
+      onBookmark(post.id);
+    }
     setIsBookmarked(!isBookmarked);
+  };
+
+  const handleCommentSubmit = () => {
+    if (!newComment.trim() || !onComment) return;
+    
+    onComment(post.id, newComment.trim());
+    
+    // Agregar comentario localmente para feedback inmediato
+    const tempComment: PostComment = {
+      id: `temp-${Date.now()}`,
+      authorId: 'current',
+      content: newComment.trim(),
+      createdAt: new Date().toISOString(),
+    };
+    setLocalComments(prev => [...prev, tempComment]);
+    setCommentsCount(prev => prev + 1);
+    setNewComment('');
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleCommentSubmit();
+    }
+  };
+
+  const getAuthorName = (authorId: string): string => {
+    const author = userStorage.getById(authorId);
+    return author?.username || 'Usuario';
   };
 
   const getRoleLabel = (role: string): React.ReactNode => {
@@ -196,6 +308,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
       }
       return part;
     });
+  };
+
+  const handleViewPost = () => {
+    navigate(`/post/${post.id}`);
   };
 
   return (
@@ -245,7 +361,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
       )}
 
       {/* Content */}
-      <div style={styles.content}>{formatContent(post.content)}</div>
+      <div style={styles.content} onClick={handleViewPost} role="button" tabIndex={0}>
+        {formatContent(post.content)}
+      </div>
 
       {/* Actions */}
       <div style={styles.actions}>
@@ -268,8 +386,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
             <i className={isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i> {likesCount}
           </button>
           <button 
-            style={styles.actionButton} 
+            style={{
+              ...styles.actionButton,
+              color: showComments ? colors.accent : colors.textSecondary,
+            }}
             title="Comentar"
+            onClick={() => setShowComments(!showComments)}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)';
             }}
@@ -277,7 +399,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
               e.currentTarget.style.background = 'transparent';
             }}
           >
-            <i className="fa-regular fa-comment"></i> {post.comments}
+            <i className="fa-regular fa-comment"></i> {commentsCount}
           </button>
           <button 
             style={styles.actionButton} 
@@ -309,6 +431,72 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLike }) => {
           <i className={isBookmarked ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}></i>
         </button>
       </div>
+
+      {/* Comments Section */}
+      {showComments && (
+        <div style={styles.commentsSection}>
+          {/* Comment Form */}
+          <div style={styles.commentForm}>
+            <input
+              type="text"
+              style={styles.commentInput}
+              placeholder="Escribe un comentario..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              style={{
+                ...styles.commentButton,
+                opacity: newComment.trim() ? 1 : 0.5,
+              }}
+              onClick={handleCommentSubmit}
+              disabled={!newComment.trim()}
+            >
+              <i className="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+
+          {/* Comments List */}
+          {localComments.length > 0 && (
+            <div>
+              {localComments.slice(-5).map((comment) => (
+                <div key={comment.id} style={styles.commentItem}>
+                  <div style={styles.commentAvatar}>
+                    {getAuthorName(comment.authorId).charAt(0).toUpperCase()}
+                  </div>
+                  <div style={styles.commentContent}>
+                    <div style={styles.commentAuthor}>
+                      {getAuthorName(comment.authorId)}
+                    </div>
+                    <div style={styles.commentText}>{comment.content}</div>
+                    <div style={styles.commentTime}>{formatTimeAgo(comment.createdAt)}</div>
+                  </div>
+                </div>
+              ))}
+              {localComments.length > 5 && (
+                <button
+                  style={{
+                    ...styles.actionButton,
+                    width: '100%',
+                    justifyContent: 'center',
+                    marginTop: '0.5rem',
+                  }}
+                  onClick={handleViewPost}
+                >
+                  Ver todos los {localComments.length} comentarios
+                </button>
+              )}
+            </div>
+          )}
+
+          {localComments.length === 0 && (
+            <p style={{ textAlign: 'center', color: colors.textSecondary, fontSize: '0.875rem' }}>
+              Sé el primero en comentar
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
